@@ -14,6 +14,7 @@ class movingAvg
         void begin();
         int reading(int newReading);
         int getAvg();
+        int stdDev();
         void reset();
 
     private:

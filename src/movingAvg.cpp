@@ -4,6 +4,7 @@
 // GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 
 #include <movingAvg.h>
+#include <math.h>
 
 // initialize - allocate the interval array
 void movingAvg::begin()
@@ -29,6 +30,27 @@ int movingAvg::reading(int newReading)
     m_readings[m_next] = newReading;
     if (++m_next >= m_interval) m_next = 0;
     return (m_sum + m_nbrReadings / 2) / m_nbrReadings;
+}
+
+// return the standard deviation of the set
+int movingAvg::stdDev()
+{
+    if(m_nbrReadings <= 1)
+    {
+        return 0;
+    }
+
+    long diff_sum = 0;
+
+    int curr_avg = getAvg();
+    for(int i=0; i< m_nbrReadings; i++)
+    {
+        int diff = m_readings[i] - curr_avg;
+
+        diff_sum += (diff * diff);
+    }
+
+    return int(sqrt(diff_sum / (m_nbrReadings - 1))) ;
 }
 
 // just return the current moving average
